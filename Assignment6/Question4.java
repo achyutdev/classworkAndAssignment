@@ -1,7 +1,7 @@
 import javax.swing.JOptionPane;
 
 /*
- * Write a program which has recursive function to detect if a number is a palindrome or not
+ * Write a program which has recursive function to detect if a given string is a palindrome or not
  */
 
 class Palindrome {
