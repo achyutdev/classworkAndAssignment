@@ -6,17 +6,14 @@ import java.util.Scanner;
  */
 
 class SmallCharPicker {
-	private static char character=10000;
-
 	public char smallchar(String s) {
-		if (s.length() == 0)
-			return character;
-		if ((int) s.charAt(0) < (int) character) {
-			SmallCharPicker.character = s.charAt(0);
-			return smallchar(s.substring(1));
+		if (s.length() == 1)
+			return s.charAt(0);
+		else {
+			char ch = s.charAt(0);
+			char c = smallchar(s.substring(1));
+			return (c < ch) ? c : ch;
 		}
-		return smallchar(s.substring(1));
-
 	}
 }
 
