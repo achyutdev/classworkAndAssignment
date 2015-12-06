@@ -1,14 +1,15 @@
 package question1;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.EventQueue;
+import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Calendar;
-import java.util.Date;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -25,45 +26,56 @@ class GuiDev extends JFrame {
 	GuiDev(String title) {
 		super(title);
 
+		AddCompanent();
+
 		// initialization
 		initializationWindow();
-		AddCompanent();
 	}
 
 	private void AddCompanent() {
 
-		// north panel
+		// Top title - Student Registration
 		JPanel north = new JPanel();
-		north.add(new JLabel("Student Details"));
+		JLabel title = new JLabel("Student Registration");
+		title.setFont(new Font("Aril", Font.BOLD, 14));
+		north.add(title);
 		this.add(north, BorderLayout.NORTH);
 
 		// name panel
 		JPanel name = new JPanel();
-		name.add(new JLabel("Name          "));
+		JLabel lname = new JLabel("Name            ");
+		name.add(lname);
 		JTextArea tname = new JTextArea(2, 20);
+		tname.setText("Name ");
 		name.add(tname);
 
 		// Dob
 		JPanel dob = new JPanel();
 		dob.add(new JLabel("Date of Birth"));
 		JTextArea tdob = new JTextArea(2, 20);
+		tdob.setText("MM/DD/YYYY");
 		dob.add(tdob);
-		
-		
-		Calendar selectedValue = (Calendar) datePicker.getModel().getValue();
-		Date selectedDate = selectedValue.getTime();
 
 		// DI
 		JPanel id = new JPanel();
 		id.add(new JLabel("ID                   "));
 		JTextArea tid = new JTextArea(2, 20);
+		tid.setText("ID");
 		id.add(tid);
 
 		// Address
 		JPanel address = new JPanel();
 		address.add(new JLabel("Address       "));
-		JTextArea taddress = new JTextArea(2, 20);
+		JTextArea taddress = new JTextArea(4, 20);
+		taddress.setText("Address");
 		address.add(taddress);
+
+		// Postal code field
+		JPanel postal = new JPanel();
+		postal.add(new JLabel("Postal Code "));
+		JTextArea tpostal = new JTextArea(2, 20);
+		tpostal.setText("Postal Code");
+		postal.add(tpostal);
 
 		// Gender
 		JPanel gender = new JPanel();
@@ -77,37 +89,27 @@ class GuiDev extends JFrame {
 		gender.add(male);
 		gender.add(female);
 
-		JRadioButton mradio = new JRadioButton("Male");
-		mradio.setSelected(true);
-		JRadioButton fradio = new JRadioButton("Female");
-		ButtonGroup grp = new ButtonGroup();
-		grp.add(mradio);
-		grp.add(fradio);
+		// Nationality
+		String[] nations = { "Select Country", "Nepal", "Japan", "United State",
+				"Australia                                              ", "Other   " };
+		JComboBox<String> nation= new JComboBox<String>(nations);
+		JPanel qualification = new JPanel();
+		qualification.add(new JLabel("Nationality     "));
+		qualification.add(nation);
 
-		JComboBox<String> quali = new JComboBox<String>();
-		quali.addItem("Select Qualification");
-		quali.addItem(" BSc                                                     ");
-		quali.addItem("BBS   ");
-		quali.addItem("MSCS  ");
-		quali.addItem("MBBS  ");
-		quali.addItem("MAC   ");
-		quali.addItem("Other   ");
-		quali.setSize(20, 4);
-		quali.setMaximumSize(quali.getPreferredSize());
-
-		// Other
+		
+		// Other Nationality
 		JPanel other = new JPanel();
-		other.add(new JLabel("Other       "));
+		other.add(new JLabel(" Other         "));
 		other.setVisible(false);
-		other.add(new JTextArea(2, 20));
+		other.add(new JTextArea(1, 10));
 
-		quali.addActionListener(new ActionListener() {
+		nation.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				JComboBox<String> box = (JComboBox<String>) e.getSource();
 				String str = (String) box.getSelectedItem();
-				// System.out.println(str);
 				if (str.equals("Other   ")) {
 					other.setVisible(true);
 				} else {
@@ -116,19 +118,26 @@ class GuiDev extends JFrame {
 			}
 		});
 
-		// Qualification
-		JPanel qualification = new JPanel();
-		qualification.add(new JLabel("Qualification "));
-		qualification.add(quali);
-
-		// program
+		
+		
+		// List of program
 		JPanel program = new JPanel();
-		program.add(new JLabel("Program     "));
-		String[] programs = { "Select Program", "Management                                       ", "Computer Science",
+		program.add(new JLabel("List of Programs"));
+		String[] programs = { "Select Program", "Management                                    ", "Computer Science",
 				"Humanity" };
 		JComboBox<String> com = new JComboBox<String>(programs);
 		program.add(com);
 
+		
+		// List of Campus
+		JPanel campus = new JPanel();
+		campus.add(new JLabel("List of Programs"));
+		String[] campuss = { "Select Campus", "Maharishi University                       ", "Standford University",
+				"Varginia University","Kathmandu University" };
+		JComboBox<String> campuslist = new JComboBox<String>(campuss);
+		campus.add(campuslist);
+		 
+		
 		// center
 		JPanel center = new JPanel();
 		center.setLayout(new BoxLayout(center, BoxLayout.Y_AXIS));
@@ -136,16 +145,20 @@ class GuiDev extends JFrame {
 		center.add(dob);
 		center.add(id);
 		center.add(address);
+		center.add(postal);
 		center.add(gender);
 		center.add(qualification);
 		center.add(other);
 		center.add(program);
+		center.add(campus);
 
 		this.add(center, BorderLayout.CENTER);
 
-		// last reset and submit
-		// Bottom
+
+		// Control button - reset submit and close
 		JPanel buttoms = new JPanel();
+		
+//		reset
 		JButton reset = new JButton("Reset");
 		reset.setActionCommand("reset");
 		reset.addActionListener(new ActionListener() {
@@ -158,11 +171,15 @@ class GuiDev extends JFrame {
 				tdob.setText("");
 				bG.clearSelection();
 				com.setSelectedItem("Select Program");
-				quali.setSelectedItem("Select Qualification");
+				nation.setSelectedItem("Select Country");
+				campuslist.setSelectedItem("Select Campus");
+				
 			}
 		});
 
 		buttoms.add(reset);
+		
+//		Submit
 		JButton submit = new JButton("Submit");
 		submit.addActionListener(new ActionListener() {
 
@@ -170,35 +187,67 @@ class GuiDev extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				String msg = "Incomplete ERROR ! \n";
 				boolean flag = true;
-				if (tname.getText().toString().equals("")) {
-					msg = msg + "Wright you Name.\n";
+				if (tname.getText().toString().equals("Name ")||tname.getText().toString().equals("")) {
+					msg = msg + "Enter your Name.\n";
+					tname.setBorder(BorderFactory.createDashedBorder(Color.RED));
 					flag = false;
+				}else{
+					tname.setBorder(null);
 				}
-				if (tdob.getText().toString().equals("")) {
-					msg = msg + "Wright you Dob.\n";
+				if (tdob.getText().toString().equals("MM/DD/YYYY")||tdob.getText().toString().equals("")) {
+					msg = msg + "Enter your Dob.\n";
+					tdob.setBorder(BorderFactory.createDashedBorder(Color.RED));
 					flag = false;
+				}else{
+					tdob.setBorder(null);
 				}
-				if (tid.getText().toString().equals("")) {
-					msg = msg + "Wright you ID.\n";
+				if (tid.getText().toString().equals("ID")||tid.getText().toString().equals("")) {
+					msg = msg + "Enter your ID.\n";
+					tid.setBorder(BorderFactory.createDashedBorder(Color.RED));
 					flag = false;
+				}else{
+					tid.setBorder(null);
 				}
-				if (taddress.getText().toString().equals("")) {
-					msg = msg + "Wright you Address.\n";
+				if (taddress.getText().toString().equals("Address")||taddress.getText().toString().equals("")) {
+					msg = msg + "Enter your Address.\n";
+					taddress.setBorder(BorderFactory.createDashedBorder(Color.RED));
 					flag = false;
+				}else{
+					taddress.setBorder(null);
 				}
-				
+				if (tpostal.getText().toString().equals("Postal Code")||tpostal.getText().toString().equals("")) {
+					msg = msg + "Enter your Postal code.\n";
+					tpostal.setBorder(BorderFactory.createDashedBorder(Color.RED));
+					flag = false;
+				}else{
+					tpostal.setBorder(null);
+				}
+
 				if (bG.isSelected(null)) {
 					msg = msg + "Select your gender.\n";
 					flag = false;
 				}
-				if (quali.getSelectedIndex()!=1) {
-					msg = msg + "Select your Qualification.\n";
+				if (nation.getSelectedIndex() != 1) {
+					msg = msg + "Select your Nationality.\n";
+					nation.setBorder(BorderFactory.createDashedBorder(Color.RED));
 					flag = false;
+				}else{
+					tpostal.setBorder(null);
 				}
-				
-				if (com.getSelectedIndex()!=1) {
+
+				if (com.getSelectedIndex() != 1) {
 					msg = msg + "Select your Program.\n";
+					com.setBorder(BorderFactory.createDashedBorder(Color.RED));
 					flag = false;
+				}else{
+					com.setBorder(null);
+				}
+				if (campuslist.getSelectedIndex() != 1) {
+					msg = msg + "Select your Campus.\n";
+					campuslist.setBorder(BorderFactory.createDashedBorder(Color.RED));
+					flag = false;
+				}else{
+					campuslist.setBorder(null);
 				}
 
 				if (flag)
@@ -208,6 +257,18 @@ class GuiDev extends JFrame {
 			}
 		});
 		buttoms.add(submit);
+		
+//		close 
+		JButton close = new JButton("Close");
+		close.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
+		buttoms.add(close);
+		
 
 		// south panel
 		JPanel south = new JPanel();
@@ -217,7 +278,7 @@ class GuiDev extends JFrame {
 	}
 
 	private void initializationWindow() {
-		this.setSize(500, 450);
+		this.setSize(450, 500);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		centerFrameOnDesktop(this);
 	}
