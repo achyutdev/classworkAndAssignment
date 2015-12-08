@@ -1,4 +1,4 @@
-package question8;
+package question2;
 
 public interface Draw {
 	
