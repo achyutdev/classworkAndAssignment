@@ -44,7 +44,7 @@ class Student {
 }
 
 class LinkList {
-	private Student first;
+	protected Student first;
 
 	public LinkList() {
 		this.first = null;
@@ -92,15 +92,16 @@ class LinkList {
 
 	public void deleteFromStudentID(int id) {
 		Student del = findStudentObj(id);
+		if(del==null)return;
 		Student next = del.next;
-		if(del == first){
-			first=next;
-		}else{
+		if (del == first) {
+			first = next;
+		} else {
 			Student parent = first;
-			while(parent.next!=del){
-				parent=parent.next;
+			while (parent.next != del) {
+				parent = parent.next;
 			}
-			parent.next=next;
+			parent.next = next;
 		}
 		System.out.println("Record deleted successfully.");
 	}
@@ -124,76 +125,149 @@ class LinkList {
 						+ current.getAddress() + "\tAge: " + current.getAge() + "\tProgram: " + current.getProgram());
 				System.out
 						.println("\n ============================================================================\n\n");
+				return;
 			}
 		}
 		System.out.println("Student Id " + id + " Not Found.");
 	}
-	
-	public void sort(){
+
+	public void sort() {
 		LinkList sorted = new LinkList();
 		Student unsorted = first;
-		while(unsorted !=null){
+		while (unsorted != null) {
 			Student next = unsorted;
 			unsorted = next.next;
 			sorted.insertSorted(next);
 		}
-		first=sorted.first;
+		first = sorted.first;
 	}
 
 	private void insertSorted(Student next) {
-		Student parent = null, current =first;
-		while(current!=null && next.getId()>current.getId()){
+		Student parent = null, current = first;
+		while (current != null && next.getId() > current.getId()) {
 			parent = current;
 			current = current.next;
 		}
-		next.next=current;
-		if(parent ==null)
-			first=next;
+		next.next = current;
+		if (parent == null)
+			first = next;
 		else
-			parent.next=next;
+			parent.next = next;
+	}
+
+	public Student pop() {
+		// override from extended class
+		return null;
+	}
+
+	public Student peek() {
+		// override from extended class
+		return null;
 	}
 }
 
-class StackOpt extends LinkList{
-	
+class StackOpt extends LinkList {
+
+	@Override
+	public Student pop() {
+		Student current = first;
+		if (first == null) {
+			return first;
+		} else {
+			while (current.next != null) {
+				current = current.next;
+			}
+			Student tmp = current;
+			current = null;
+			return tmp;
+		}
+	}
+
+	@Override
+	public Student peek() {
+		Student current = first;
+		if (first == null) {
+			return first;
+		} else {
+			while (current.next != null) {
+				current = current.next;
+			}
+			return current;
+		}
+	}
 }
 
-class QueueOpt extends LinkList{
+class QueueOpt extends LinkList {
 	
+	@Override
+	public Student pop() {
+		Student tmp = first;
+		first = first.next;
+		return tmp;
+	}
+	
+	public Student peek(){
+		return first;
+	}
 }
 
 public class Question4 {
 
 	public static void main(String[] args) {
 		Scanner input = new Scanner(System.in);
-		LinkList obj = new LinkList();
+		System.out.println("Enter 1 for Stack Operation and 2 for Queue Operation");
+		LinkList obj;
+		int value = input.nextInt();
+		if (value == 1) {
+			obj = new StackOpt();
+			OperationImplement(input, obj);
+		} else if (value == 2) {
+			obj = new QueueOpt();
+			OperationImplement(input, obj);
+		} else {
+			System.out.println(" Error Input value.");
+
+		}
+	}
+
+	private static void OperationImplement(Scanner input, LinkList obj) {
 		while (true) {
-			System.out.println("Munu :  1:add\n\t2:find by Id\n\t3:display\n\t4:delete\n\t5:peek\n\t6:display");
+			System.out.println(
+					"Munu :  1:push\n\t2:pop\n\t3:peek\n\t4:find by Id\n\t5:display\n\t6:delete by id\n\t7:sort");
 			int key = input.nextInt();
 			switch (key) {
 			case 1:
 				obj.add();
 				break;
 			case 2:
+				Student student = obj.pop();
+				if(student==null){
+					System.out.println("Empty List.");
+					break;
+				}
+				System.out.println("Student " + student.getName() + " is poped.");
+				break;
+			case 3:
+				Student current = obj.pop();
+				System.out.println("\tId: " + current.getId() + "\tName: " + current.getName() + "\tAddress: "
+						+ current.getAddress() + "\tAge: " + current.getAge() + "\tProgram: " + current.getProgram());
+				break;
+			case 4:
 				System.out.print("Enter Student Id:");
 				int find = input.nextInt();
 				obj.findById(find);
 				break;
-			case 3:
+			case 5:
 				obj.display();
 				break;
-			case 4:
+			case 6:
 				System.out.print("Enter Stuent ID:");
 				obj.deleteFromStudentID(input.nextInt());
 				break;
-			case 5:
-				// System.out.print("Peek(tail value) :" + obj.peek());
-				// break;
-			case 6:
-				System.out.print("Queue :");
-				obj.display();
+			case 7:
+				obj.sort();
+				System.out.println("List is sorted.\n");
 				break;
-
 			default:
 				System.out.println("Invalid Input.\n ERROR!!!!");
 				break;
